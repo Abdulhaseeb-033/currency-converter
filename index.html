@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-layout">
+
+
+        <header class="top-navigation">
+            <div class="top-nav-container">
+                <a href="#home" class="brand" aria-label="CurrenCy Home">
+                    <span class="brand-icon">
+                        <i data-lucide="arrow-left-right"></i>
+                    </span>
+                    <span class="brand-name">Curren<span>cy</span></span>
+                </a>
+
+                <nav class="top-nav-links" id="topNavLinks" aria-label="Main navigation">
+                    <a href="#home" class="top-nav-link active">Overview</a>
+                    <a href="#markets" class="top-nav-link">Markets</a>
+                    <a href="#exchange" class="top-nav-link">Converter</a>
+                    <a href="#saved-pairs" class="top-nav-link">Saved Pairs</a>
+                </nav>
+
+                <div class="top-nav-right">
+                    <div class="market-status" aria-label="Market status: Daily Rates">
+                        <span class="status-indicator"></span>
+                        <span>Daily Rates</span>
+                    </div>
+
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Open navigation menu"
+                        aria-expanded="false" aria-controls="topNavLinks">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <div class="header-heading">
+                    <p class="header-eyebrow">CURRENCY OVERVIEW</p>
+                    <h1>Market Overview</h1>
+                    <p class="header-description">
+                        Track exchange rates and explore currency movements.
+                    </p>
+                </div>
+
+                <div class="header-actions">
+                    <button class="refresh-btn" id="refreshRatesBtn" type="button" aria-label="Refresh exchange rates"
+                        title="Refresh exchange rates">
+                        <i data-lucide="refresh-cw"></i>
+                    </button>
+                </div>
+            </header>
+
+            <section class="summary-section" id="home" aria-label="Currency summary">
+                <div class="section-heading">
+                    <div>
+                        <h2>Currency Insights</h2>
+                        <p>Overview of your selected currency pair.</p>
+                    </div>
+
+
+                    <div class="summary-actions">
+                        <div class="selected-pair">
+                            <span class="pair-dot"></span>
+                            <span id="selectedPairLabel">USD / PKR</span>
+                        </div>
+
+                        <button type="button" class="save-pair-btn" id="savePairBtn">
+                            <i data-lucide="star"></i>
+                            <span>Save Pair</span>
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <div class="currency-selector">
+                    <div class="currency-field">
+                        <label for="baseCurrency">From currency</label>
+                        <select id="baseCurrency">
+                            <option value="USD">Loading currencies...</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="swap-currencies-btn" id="swapCurrenciesBtn"
+                        aria-label="Swap currencies" title="Swap currencies">
+                        <i data-lucide="arrow-left-right"></i>
+                    </button>
+
+                    <div class="currency-field">
+                        <label for="targetCurrency">To currency</label>
+                        <select id="targetCurrency">
+                            <option value="PKR">Loading currencies...</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="summary-grid">
+                    <article class="summary-card">
+                        <div class="card-top">
+                            <span class="card-label">Exchange Rate</span>
+                            <span class="card-icon">
+                                <i data-lucide="arrow-left-right"></i>
+                            </span>
+                        </div>
+
+                        <p class="card-value" id="currentRate">—</p>
+                        <p class="card-description" id="currentRateDescription">1 USD in PKR</p>
+                    </article>
+
+                    <article class="summary-card">
+                        <div class="card-top">
+                            <span class="card-label">Period High</span>
+                            <span class="card-icon">
+                                <i data-lucide="trending-up"></i>
+                            </span>
+                        </div>
+
+                        <p class="card-value" id="periodHigh">—</p>
+                        <p class="card-description">Highest rate in selected period</p>
+                    </article>
+
+                    <article class="summary-card">
+                        <div class="card-top">
+                            <span class="card-label">Last Updated</span>
+                            <span class="card-icon">
+                                <i data-lucide="calendar-clock"></i>
+                            </span>
+                        </div>
+
+                        <p class="card-value card-date" id="lastUpdated">—</p>
+                        <p class="card-description">Latest available rate date</p>
+                    </article>
+                </div>
+            </section>
+
+
+            <section class="chart-section" id="markets" aria-label="Exchange rate history">
+                <div class="chart-header">
+                    <div>
+                        <h2>Exchange Rate History</h2>
+                        <p>Explore how your selected currency pair has moved over time.</p>
+                    </div>
+
+                    <div class="chart-filters" aria-label="Chart time range">
+                        <button type="button" class="chart-filter active" data-range="7D">
+                            7D
+                        </button>
+                        <button type="button" class="chart-filter" data-range="1M">
+                            1M
+                        </button>
+                        <button type="button" class="chart-filter" data-range="3M">
+                            3M
+                        </button>
+                        <button type="button" class="chart-filter" data-range="1Y">
+                            1Y
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="exchangeRateChart"></canvas>
+                </div>
+
+                <p class="chart-status" id="chartStatus" role="status">
+                    Historical rates will appear here.
+                </p>
+            </section>
+
+            <section class="recent-movement-section" aria-label="Recent currency movement">
+                <div class="section-heading">
+                    <div>
+                        <h2>Recent Movement</h2>
+                        <p>See how your selected currency pair has changed.</p>
+                    </div>
+                    <span class="quick-convert-icon">
+                        <i data-lucide="trending-up"></i>
+                    </span>
+                </div>
+
+                <div class="recent-movement-card">
+                    <p class="movement-pair" id="movementPair">USD / PKR</p>
+
+                    <div class="movement-main">
+                        <div>
+                            <p class="movement-label">Rate change</p>
+                            <h3 id="movementDifference">—</h3>
+                        </div>
+
+                        <div class="movement-percentage">
+                            <p class="movement-label">Percentage change</p>
+                            <h3 id="movementPercentage">—</h3>
+                        </div>
+                    </div>
+
+                    <p id="movementDirection">Waiting for data...</p>
+                    <p id="movementStatus" role="status">
+                        Historical data will appear here.
+                    </p>
+                </div>
+            </section>
+
+            <section class="quick-convert-section" id="exchange" aria-label="Quick currency converter">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Quick Convert</h2>
+                        <p>Convert currencies without leaving your dashboard.</p>
+                    </div>
+
+                    <span class="quick-convert-icon">
+                        <i data-lucide="calculator"></i>
+                    </span>
+                </div>
+
+                <div class="quick-convert-card">
+
+                    <div class="quick-convert-fields">
+
+                        <div class="currency-field">
+                            <label for="quickConvertAmount">Amount</label>
+                            <input type="number" id="quickConvertAmount" value="1" min="0" step="any"
+                                placeholder="Enter amount" />
+                        </div>
+
+                        <div class="currency-field">
+                            <label for="quickConvertFrom">From</label>
+                            <select id="quickConvertFrom">
+                                <option value="USD">USD</option>
+                            </select>
+                        </div>
+
+                        <button type="button" class="swap-currencies-btn quick-convert-swap" id="quickConvertSwap"
+                            aria-label="Swap conversion currencies" title="Swap currencies">
+                            <i data-lucide="arrow-left-right"></i>
+                        </button>
+
+                        <div class="currency-field">
+                            <label for="quickConvertTo">To</label>
+                            <select id="quickConvertTo">
+                                <option value="PKR">PKR</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="quick-convert-result" aria-live="polite">
+                        <div>
+                            <p class="quick-result-label">Converted Amount</p>
+                            <p class="quick-result-value" id="quickConvertResult">—</p>
+                            <p class="quick-result-description" id="quickConvertRate">
+                                Enter an amount to convert.
+                            </p>
+                        </div>
+
+                        <button type="button" class="quick-convert-btn" id="quickConvertBtn">
+                            <i data-lucide="arrow-right-left"></i>
+                            Convert
+                        </button>
+                    </div>
+
+                    <p class="quick-convert-status" id="quickConvertStatus" role="status"></p>
+
+                </div>
+
+            </section>
+
+
+            <section class="saved-pairs-section" id="saved-pairs">
+                <div class="section-heading">
+                    <div>
+                        <h2>Saved Currency Pairs</h2>
+                        <p>Keep your favorite currency pairs close at hand.</p>
+                    </div>
+
+                    <span class="quick-convert-icon">
+                        <i data-lucide="star"></i>
+                    </span>
+                </div>
+
+                <div class="saved-pairs-grid" id="savedPairsList" aria-live="polite">
+                    <p class="saved-pairs-empty">
+                        No saved pairs yet. Use "Save Pair" to add one.
+                    </p>
+                </div>
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
